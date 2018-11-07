@@ -1,28 +1,42 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
+import { Switch, Route } from 'react-router-dom';
+import Header from './components/layout/Header';
+import Home from './components/pages/Home';
+import About from './components/pages/About';
+import Users from './components/users/Users';
+
+import userData from './data/user-data.json';
+
 import './App.css';
 
 class App extends Component {
+  state = {
+    user: [],
+    users: [],
+  }
+
+  componentDidMount() {
+    this.setState({users: userData});
+  }
+
   render() {
+    const { users } = this.state;
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+      <div>
+        <Header />
+          <div className='container'>
+            <Switch>
+              <Route exact path='/' component={Home} />
+              <Route exact path='/about' component={About} />
+              <Route exact path='/users' render={() => <Users users={users} />} />
+              <Route path='test' render={() => <About user={this.state.user} />} />
+            </Switch>
+          </div>
       </div>
     );
   }
 }
+
+    
 
 export default App;
